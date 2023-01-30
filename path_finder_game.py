@@ -1,7 +1,8 @@
+from tkinter import Tk, messagebox
 import pygame
 from queue import PriorityQueue
 
-WIDTH = 500 # Width of the entire board
+WIDTH = 450 # Width of the entire board
 WIN = pygame.display.set_mode((WIDTH, WIDTH))
 pygame.display.set_caption("Path Finding Algorithm")
 
@@ -44,7 +45,7 @@ class Node:
     return self.colour == ORANGE
 
   def is_end(self): #checks for the end
-    return self.colour == PURPLE
+    return self.colour == TURQUOISE
 
   def reset(self): #RESET
     self.colour = WHITE
@@ -62,10 +63,10 @@ class Node:
     self.colour = ORANGE
 
   def make_end(self): 
-    self.colour = PURPLE
+    self.colour = TURQUOISE 
 
   def make_path(self):
-    self.colour = TURQUOISE
+    self.colour = PURPLE
 
   def draw(self, win): #draws node within the defined window
     pygame.draw.rect(win, self.colour, (self.x, self.y, self.width, self.width))
@@ -87,17 +88,24 @@ class Node:
   def __lt__(self, other):
     return False
 
-def h(p1, p2): #Using Manhattan distance to find the distnace between the start and end
+#Using Manhattan distance to find the distnace between the start and end
+def h(p1, p2): 
   x1, y1 = p1
   x2, y2 = p2
   return abs(x1 - x2) + abs(y1 - y2) #Manhattan distance formula
 
-def draw_path(came_from, current, draw):
+#Draws the path from the start and end nodes
+def draw_path(came_from, current, draw): 
+  global num
+  num = 0
+
   while current in came_from:
     current = came_from[current]
     current.make_path()
+    num += 1
     draw()
 
+#Algorith to find the shortest path between the start and end nodes
 def algorithm(draw, grid, start, end):
   count = 0
   open_set = PriorityQueue()
@@ -142,7 +150,8 @@ def algorithm(draw, grid, start, end):
 
   return False
 
-def create_grid(rows, width): #Creates the grid to draw each node
+#Creates the grid to draw each node
+def create_grid(rows, width): 
   grid = []
   grid_pixel_width = width // rows #integer division, also know as floor division
   for i in range(rows):
@@ -153,13 +162,15 @@ def create_grid(rows, width): #Creates the grid to draw each node
   
   return grid
 
-def draw_grid(win, rows, width): #draws grid lines
+#Draws grid lines
+def draw_grid(win, rows, width): 
   grid_pixel_width = width // rows
   for i in range(rows):
     pygame.draw.line(win, GREY, (0, i * grid_pixel_width), (width, i * grid_pixel_width)) #draws  horizontal lines
     for j in range(rows):
       pygame.draw.line(win, GREY, (j * grid_pixel_width, 0), (j * grid_pixel_width, width)) #draws vertical lines
 
+#Draws the grid
 def draw(win, grid, rows, width):
   win.fill(WHITE)
   
@@ -170,6 +181,7 @@ def draw(win, grid, rows, width):
   draw_grid(win, rows, width)
   pygame.display.update()
 
+#Gets the position of the squares on the grid
 def get_position(pos, rows, width):
   grid_pixel_width = width // rows
   y, x = pos
@@ -186,12 +198,18 @@ def main(win, width):
   set_start = False
   set_end = False
 
+  #Game rules
+  Tk().wm_withdraw()
+  messagebox.showinfo('Game info', ('1. Place down the beginning and end nodes\n2. Draw barriers on the grid\n3. Click space to start\n\n \n Left Click to place nodes \n Right Click to remove nodes\n Press C to clear grid\n Press Q to Exit'))
+
   #Game states
   running = True
   started = False
+  done = False
 
   while running:
     draw(win, grid, ROWS, width)
+
     for event in pygame.event.get():
       if event.type == pygame.QUIT: #changes state to false after closing game
         running = False
@@ -226,8 +244,9 @@ def main(win, width):
         if node == set_start:
           set_start = False
         elif node == set_end:
-          set_end = False
+          set_end = False   
 
+      #Runs the algorithm to find the shortest distance between the start and end node
       if event.type == pygame.KEYDOWN:
         if event.key == pygame.K_SPACE and set_end and set_start:
           for row in grid:
@@ -236,11 +255,26 @@ def main(win, width):
 
           algorithm(lambda: draw(win, grid, ROWS, width), grid, set_start, set_end)
 
+          #Exit message box
+          Tk().wm_withdraw()
+          result = messagebox.askyesno('Exit', ('The shortest distance from the start to end node is ' + str(num) + ' blocks away.\n\nWould you like to exit?'))
+          if result == True: #Quits the application 
+              running = False
+          else: #Clears the grid  
+              set_start = False
+              set_end = False
+              grid = create_grid(ROWS, width)   
+          print(f"The shortest distance from the start to end node is {num} blocks away")
+
+        #Clears the grid  
         if event.key == pygame.K_c:
           set_start = False
           set_end = False
           grid = create_grid(ROWS, width)
 
+        #Quits the application
+        if event.key == pygame.K_q:
+          running = False      
   pygame.quit()
 
 main(WIN, WIDTH)
