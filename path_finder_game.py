@@ -17,6 +17,8 @@ ORANGE = (255, 165, 0)
 GREY = (128, 128, 128)
 TURQUOISE = (64, 224, 208)
 
+num = 0
+
 #Class for the indiviual square drawn on the grid
 class Node:
   def __init__(self, row, col, width, total_rows): #inital attributes
@@ -97,7 +99,6 @@ def h(p1, p2):
 #Draws the path from the start and end nodes
 def draw_path(came_from, current, draw): 
   global num
-  num = 0
 
   while current in came_from:
     current = came_from[current]
@@ -257,14 +258,24 @@ def main(win, width):
 
           #Exit message box
           Tk().wm_withdraw()
-          result = messagebox.askyesno('Exit', ('The shortest distance from the start to end node is ' + str(num) + ' blocks away.\n\nWould you like to exit?'))
+
+          #Checks if user surrounds the end node with borders making it impossible to find the shortest distance
+          if num != 0:
+            result = messagebox.askyesno('Exit', ('The shortest distance from the start to end node is ' + str(num) + ' blocks away.\n\nWould you like to exit?'))
+          else: 
+            result = messagebox.askyesno('Exit', ('I apologize for my inability to find the shortest distance. I recommend avoiding the path that encircles the final node to improve the result.\n\nWould you like to exit?'))
+
           if result == True: #Quits the application 
               running = False
           else: #Clears the grid  
               set_start = False
               set_end = False
               grid = create_grid(ROWS, width)   
-          print(f"The shortest distance from the start to end node is {num} blocks away")
+          
+          if num == 0:
+            print(f"I apologize for my inability to find the shortest distance. I recommend avoiding the path that encircles the final node to improve the result.")
+          else:
+            print(f"The shortest distance from the start to end node is {num} blocks away")
 
         #Clears the grid  
         if event.key == pygame.K_c:
