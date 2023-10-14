@@ -7,16 +7,21 @@ This project aims to visualize the process of finding the shortest path between 
 ## Demo
 
 ### Basic Example
-https://github.com/dosawaru/PathFinder/assets/35234154/1b03f31d-39bd-4307-bafe-424771b30fe8
+
+![2023-10-13 19-52-19](https://github.com/dosawaru/PathFinder/assets/35234154/ff305d18-772e-473f-a21a-35ba508b58ce)
+
 ![Screenshot 2023-10-13 19-52-53](https://github.com/dosawaru/PathFinder/assets/35234154/4ae5a1aa-fc80-453c-bda1-8b31e3bbe6c9)
 
 ### Simple Example
-https://github.com/dosawaru/PathFinder/assets/35234154/8e8685c5-29f6-405d-9998-4ae266196a10
+
+![2023-10-13 19-54-14](https://github.com/dosawaru/PathFinder/assets/35234154/ed9dd32c-78ae-4117-9031-52e9da823af7)
+
 ![Screenshot 2023-10-13 19-54-42](https://github.com/dosawaru/PathFinder/assets/35234154/f47ac461-8a54-482c-837a-92b356018ba0)
 
-
 ### Complex Example
-https://github.com/dosawaru/PathFinder/assets/35234154/80233e3b-4e07-44c8-93e2-6a4e0d2dab83
+
+![2023-10-13 19-56-49](https://github.com/dosawaru/PathFinder/assets/35234154/2d69cd97-5af2-41fc-b906-babaaa3a4504)
+
 ![Screenshot 2023-10-13 19-57-40](https://github.com/dosawaru/PathFinder/assets/35234154/a5c65404-6f48-4085-b38e-8ffcac422320)
 
 
